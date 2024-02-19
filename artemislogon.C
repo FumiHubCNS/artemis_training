@@ -1,12 +1,17 @@
 {
+  gStyle->SetOptStat(1111111);
+  gStyle->SetOptFit(1111);
+
    if (0) {
       TString path = gSystem->GetDynamicPath();
       path.Append(":./processors:.");
       gSystem->SetDynamicPath(path);
       gSystem->Load("libuser");
-//      gSystem->Load("libMinuit");
+      gSystem->Load("libCAT");
+      gSystem->Load("libMinuit");
    }
 
+   
    TCatCmdFactory *cf = TCatCmdFactory::Instance();
    cf->SetOptExactName(kFALSE);
    cf->Register(TCatCmdHelp::Instance());
@@ -19,26 +24,60 @@
    cf->Register(TCatCmdCd::Instance());
    cf->Register(TCatCmdPrx::Instance());
    cf->Register(TCatCmdPry::Instance());
-//   cf->Register(TCatCmdMnx::Instance());
-//   cf->Register(TCatCmdMny::Instance());
-//   cf->Register(TCatCmdAvx::Instance());
-//   cf->Register(TCatCmdAvy::Instance());
-//   cf->Register(TCatCmdBnx::Instance());
-//   cf->Register(TCatCmdBny::Instance());
+   cf->Register(TCatCmdAvx::Instance());
+   cf->Register(TCatCmdAvy::Instance());
+   cf->Register(TCatCmdBnx::Instance());
+   cf->Register(TCatCmdBny::Instance());
+   cf->Register(new TCatCmdLg(TCatCmdLg::kX, 0));
+   cf->Register(new TCatCmdLg(TCatCmdLg::kX, 1));
+   cf->Register(new TCatCmdLg(TCatCmdLg::kY, 0));
+   cf->Register(new TCatCmdLg(TCatCmdLg::kY, 1));
+   cf->Register(new TCatCmdLg(TCatCmdLg::kZ, 0));
+   cf->Register(new TCatCmdLg(TCatCmdLg::kZ, 1));
    cf->Register(TCatCmdSly::Instance());
    cf->Register(TCatCmdLoopAdd::Instance());
    cf->Register(TCatCmdLoopResume::Instance());
    cf->Register(TCatCmdLoopSuspend::Instance());
    cf->Register(TCatCmdLoopTerminate::Instance());
    cf->Register(new TCatCmdHstore);
-   cf->Register(TCatCmdSave::Instance());
    cf->Register(TCatCmdXval::Instance());
-   cf->Register(new art::TCmdFileLs);
-   cf->Register(new art::TCmdFileCd);
+   cf->Register(art::TCatCmdListg::Instance());
+   //   cf->Register(art::TCmdMWDCCalib::Instance());
+   //   cf->Register(art::TCmdMWDCConfig::Instance());
+   //   cf->Register(new art::TCmdFiga);
+   //   cf->Register(TCmdXsta::Instance());
    cf->Register(new art::TCmdBranchInfo);
    cf->Register(new art::TCmdClassInfo);
+   cf->Register(new art::TCmdHdel);
+   cf->Register(new art::TCmdFileCd);
+   cf->Register(new art::TCmdFileLs);
+   cf->Register(art::TCmdPn::Instance());
+   cf->Register(art::TCmdPb::Instance());
+   cf->Register(art::TCmdPcd::Instance());
+   cf->Register(new art::TCmdRg(art::TCmdRg::kX));
+   cf->Register(new art::TCmdRg(art::TCmdRg::kY));
+   cf->Register(new art::TCmdRg(art::TCmdRg::kZ));
+   cf->Register(new art::TCmdSlope);
+   cf->Register(art::TCmdPn::Instance());
+   cf->Register(art::TCmdPb::Instance());
+   cf->Register(art::TCmdPcd::Instance());
+   cf->Register(art::TCmdPadZoom::Instance());
    cf->Register(new art::TCmdProcessorDescription);
-   
+   cf->Register(new art::TCmdUnZoom);
+   cf->Register(new art::TCmdComment);
+   cf->Register(new art::TCmdGlobalComment);
+   art::TCmdSave *cmdsave = art::TCmdSave::Instance();
+   cmdsave->SetDefaultDirectory("figs");
+   cmdsave->SetAddDateDir(kTRUE);
+   cmdsave->SetAutoName(kTRUE);
+   cmdsave->AddFormat("png");
+   cmdsave->AddFormat("root");
+   cmdsave->AddFormat("pdf", 1);
+   cf->Register(cmdsave);
+   art::TCmdPrint *pri = new art::TCmdPrint;
+   pri->SetOption("-o fit-to-page");
+  
+
    {
       TString path = gSystem->GetIncludePath();
       path.Append("-I./processors");

@@ -1,0 +1,46 @@
+Anchor:
+  - &maxevt 100000
+  - &histout output/sim/TwoBodyReactionWithHistogram.hist.root
+  - &output output/sim/TwoBodyReactionWithHistogram.root
+Processor:
+  - name: timer
+    type: art::TTimerProcessor
+##################################################################################################
+  - name: MyTProcessor
+    type: art::TBinaryReactionGenerator
+    parameter:
+      AngDistFile: ""  # [TString] file name of the angular distribution. The format of content is '%f %f'. 
+      AngMom: 0  # [Int_t] angular momentum for bessel function. If -1 (default), the isotopic distribution is assumed.
+      AngRange: [0, 15]  # [FloatVec_t] the range of angular distribution
+      DoRandomizePhi: 1  # [Int_t] Flag to randomize phi direction (uniform)
+      ExMean: 15  # [Float_t] mean of excitation energy
+      ExRange: [0, 30]  # [FloatVec_t] the range of excitation energy
+      ExWidth: 7  # [Float_t] width of excitation energy : default is delta function
+      KinMean: 100  # [Float_t] mean kinetic energy per nucleon
+      MCTruthCollection: mctruth  # [TString] output name of MC truth
+      MaxLoop: *maxevt  # [Int_t] the maximum number of loop
+      OutputCollection: recoil  # [TString] output name of particle array
+      OutputTransparency: 0  # [Bool_t] Output is persistent if false (default)
+      Particle1: [86, 36]  # [IntVec_t] mass and atomic number for particle1
+      Particle2: [2, 1]  # [IntVec_t] mass and atomic number for particle2
+      Particle3: [86, 36]  # [IntVec_t] mass and atomic number for particle3
+      RunName: sim  # [TString] run name
+      RunNumber: 0  # [Int_t] run number
+      Verbose: 1  # [Int_t] verbose level (default 1 : non quiet)
+##################################################################################################
+  - name: projectiontpccorrelation
+    type: art::TTreeProjectionProcessor
+    parameter:
+      Type: art::TTreeProjection
+      FileName: hist/TwoBodyReaction.hist.yaml
+      OutputFilename: *histout
+##################################################################################################
+  - name: MyTOutputTreeProcessor
+    type: art::TOutputTreeProcessor
+    parameter:
+      FileName: *output  # [TString] The name of output file
+      OutputTransparency: 0  # [Bool_t] Output is persistent if false (default)
+      SplitLevel: 0  # [Int_t] Split level of tree defined in TTree (default is changed to be 0)
+      TreeName: tree  # [TString] The name of output tree
+      Verbose: 1  # [Int_t] verbose level (default 1 : non quiet)
+##################################################################################################

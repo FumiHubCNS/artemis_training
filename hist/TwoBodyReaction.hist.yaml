@@ -1,0 +1,27 @@
+alias:
+  ScatThetaCM: mctruth[2].Theta()*TMath::RadToDeg()
+  scatEx: mctruth[2].fE-mctruth[2].TKE()-mctruth[0].M()
+  recoilTKE: recoil.TKE()
+  recoilThetaLab: recoil.Theta()*TMath::RadToDeg()
+  pmag: TMath::Sqrt(  recoil.Px()*recoil.Px() + recoil.Py()*recoil.Py() + recoil.Pz()*recoil.Pz() )
+  qprojxy: TMath::Sqrt(pmag*pmag-recoil.Pz()*recoil.Pz())/197
+  qz: recoil.Pz()/197
+
+group:
+  - name: monte_carlo_simulation 
+    title: Monte-Carlo Simulation ( Two Body Reaction)
+    contents:
+      - name: sact_theta
+        title: Angular Distribution (CM System)
+        x: ["ScatThetaCM", 200, 0.0, 15.0]
+      - name: ex
+        title: Excitation Energy Distribution
+        x: ["scatEx", 200, 0., 30.]
+      - name: momentum_transfer
+        title: q_{xy} vs q_{z} (Momentum Transfer) 
+        x: ["qz", 200, -0.05, 1.95]
+        y: ["qprojxy", 200,-0.05, 1.95]
+      - name: kinematics
+        title: TKE vs Theta_{Lab} (Kinematics) 
+        x: ["recoilThetaLab", 200, 0, 90]
+        y: ["recoilTKE", 200, 0, 15]

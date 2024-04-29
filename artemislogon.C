@@ -76,7 +76,8 @@
    cf->Register(cmdsave);
    art::TCmdPrint *pri = new art::TCmdPrint;
    pri->SetOption("-o fit-to-page");
-  
+
+   TDatabasePDG* gPDGMassTable = new TDatabasePDG();  
 
    {
       TString path = gSystem->GetIncludePath();

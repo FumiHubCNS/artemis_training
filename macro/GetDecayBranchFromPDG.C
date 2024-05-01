@@ -1,6 +1,6 @@
 void GetDecayBranchFromPDG( const char* hname = "Lambda0")
 {	
-
+	TDatabasePDG* gPDGMassTable = new TDatabasePDG();
 	TString HadronName = hname;
 	TParticlePDG *ParentHadron = gPDGMassTable->GetParticle(HadronName.Data());
 	Int_t NumOfDecayChannel = ParentHadron->NDecayChannels();

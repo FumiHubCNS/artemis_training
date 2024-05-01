@@ -1,5 +1,6 @@
 void CalcHadron2BodyReactionTempl(Int_t imax=100000){
 
+	TDatabasePDG* gPDGMassTable = new TDatabasePDG();
 	// Create Tree and root
  	TFile *file = new TFile("./output/sim.hadron.2body.root", "RECREATE");
  	TTree *tree = new TTree("tree", "Data Tree");
